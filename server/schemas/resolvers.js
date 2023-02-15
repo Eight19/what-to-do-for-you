@@ -83,7 +83,24 @@ const resolvers = {
       }
       throw new AuthenticationError('You need to be logged in!');
     },   
+    updateTodoStatus: async ( _, {todoText}, context ) => {
+      if (context.user) {
+        const todo = await Todo.create({
+          todoText,
+          todo: context.user.username,
+        });
+
+        await User.updateTodoStatus(
+          { _id: context.user._id },
+          { $addToSet: { todo: todo._id } }
+        );
+
+        return todo;
+      }
+      throw new AuthenticationError('You need to be logged in!');
+    },   
     
+
   },
 };
 

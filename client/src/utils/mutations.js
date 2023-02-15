@@ -23,3 +23,10 @@ export const ADD_USER = gql`
     }
   }
 `;
+
+export const ADD_TODO = gql`
+  mutation addTodo($text: String!, $status: String!) {
+    addTodo(text: $text, status: $status) {
+    }
+  }
+`;
