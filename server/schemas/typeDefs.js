@@ -19,6 +19,12 @@ const typeDefs = gql`
     user: User
   }
 
+  type Note {
+    _id: ID!
+    noteText: String!
+    content: String!
+  }
+
   type Query {
     users: [User]!
     user(id: ID!): User
@@ -27,6 +33,11 @@ const typeDefs = gql`
     todos: [Todo]
     todo(id: ID!): Todo
   }
+  input NoteInput {
+    noteText: String!
+    content: String!
+  }
+
   type Mutation {
     addUser(email:String!, username:String!, password:String!): Auth
     login(email:String!, password:String!): Auth
@@ -36,4 +47,7 @@ const typeDefs = gql`
   }
 `;
 
-module.exports = typeDefs;
+import {}
+
+module.exports = resolvers;
+
