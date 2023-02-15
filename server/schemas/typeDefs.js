@@ -10,7 +10,6 @@ const typeDefs = gql`
     _id: ID
     username: String
     email: String
-    password: String
     todos: [Todo]
   }
 
@@ -19,12 +18,12 @@ const typeDefs = gql`
     user: User
   }
 
-  type Note {
+  type Note { 
     _id: ID!
     noteText: String!
     content: String!
   }
-
+  
   type Query {
     users: [User]!
     user(id: ID!): User
@@ -33,21 +32,21 @@ const typeDefs = gql`
     todos: [Todo]
     todo(id: ID!): Todo
   }
-  input NoteInput {
-    noteText: String!
-    content: String!
-  }
 
+  input NoteInput {
+  title: String!
+  content: String!
+ }
+ 
   type Mutation {
     addUser(email:String!, username:String!, password:String!): Auth
     login(email:String!, password:String!): Auth
-    addTodo(text: String!): Todo
+    addTodo(todoText: String!): Todo
     updateTodoStatus(status: String!): Todo
     # Status Types: "IN_PROGRESS", "COMPLETED", "ARCHIVED"
   }
 `;
 
-import {}
+module.exports = typeDefs;
 
-module.exports = resolvers;
 
