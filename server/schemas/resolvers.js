@@ -1,5 +1,5 @@
 const { AuthenticationError } = require("apollo-server-express");
-const { User } = require("../models");
+const { User, Todo } = require("../models");
 const { signToken } = require("../utils/auth");
 
 const resolvers = {
@@ -37,6 +37,14 @@ const resolvers = {
       }
       throw new AuthenticationError("You need to be logged in!");
     },
+    todos: async () => {
+      return Todo.find();
+   },
+    todo: async (_, args) => {
+      return Todo.findOne({ _id: args.id });
+    },
+  
+  
   },
   Mutation: {
     addUser: async (_, args) => {
@@ -77,6 +85,24 @@ const resolvers = {
       }
       throw new AuthenticationError('You need to be logged in!');
     },   
+  },
+  updateTodoStatus: async ( _, { id, status }, context ) => {
+      if (context.user) {
+        const todo = await Todo.findOneAndUpdate(
+          { _id: id }, 
+          { $set: { status }},
+          { new: true }
+        );
+
+        await User.findOneAndUpdate(
+          { _id: context.user._id },
+          { $addToSet: { todo: todo._id } },
+          { new: true }
+        );
+  
+        return todo;
+      }
+      throw new AuthenticationError('You need to be logged in!');
   },
 };
 
