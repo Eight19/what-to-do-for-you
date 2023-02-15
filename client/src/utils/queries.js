@@ -39,3 +39,12 @@ export const QUERY_ME = gql`
     }
   }
 `;
+
+export const QUERY_TODO = gql`
+  query todo {
+      _id
+      text
+      status
+    }
+  }
+`;
