@@ -1,5 +1,42 @@
-const toDo = require('./toDo');
-const user = require('./user');
+const { Schema, model } = require('mongoose');
+
+const userSchema = new Schema({
+
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    match: [/.+@.+\..+/, 'Must match an email address!'],
+  },
+  //Add a phone number field//
+  phoneNumber: {
+    type: Number,
+    required: true,
+    unique: true,
+    minlength: 10
+  },
+  password: {
+    type: String,
+    required: true,
+    minlength: 5,
+  }
+});
+
+const User = model('User', userSchema);
+
+
+module.exports = User;
+
+
+
+
+
 
 // router.use('/toDo', toDo);
 // router.use('/user', user);
