@@ -21,6 +21,7 @@ const typeDefs = gql`
 
   type Query {
     me: User
+    todos: [Todo]
   }
 
   type Mutation {
