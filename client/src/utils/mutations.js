@@ -25,15 +25,7 @@ export const ADD_TODO = gql`
   }
 `;
 
-export const ADD_UPDATE_TODO_STATUS = gql`
-  mutation addTodo($id: ID!, $status: String!) {
-    addTodo(id: $id, status: $status) {
-      user {
-        _id
-        username
-        email
-        todos
-      }
-    }
-  }
-`;
+export const ADD_TODO = gql`
+  mutation addTodo($text: String!, $status: String!) {
+    addTodo(text: $text, status: $status) {
+

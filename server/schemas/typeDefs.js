@@ -35,6 +35,7 @@ const typeDefs = gql`
     login(email:String!, password:String!): Auth
     addTodo(text: String!): Todo
     updateTodoStatus(id: ID!, status: String!): Todo
+    updateTodoStatus(id: ID!, status: String!): Todo
     # Status Types: "IN_PROGRESS", "COMPLETED", "ARCHIVED"
   }
 `;
