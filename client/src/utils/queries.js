@@ -20,13 +20,11 @@ export const SEARCH_USERS = gql`
   }
 `;
 
-export const QUERY_USER = gql`
-  query user($id: ID!) {
-    user(id: $id) {
-      _id
-      username
-      email
-    }
+export const QUERY_TODOS = gql`
+  query todos {
+    _id
+    text
+    status
   }
 `;
 
@@ -36,6 +34,11 @@ export const QUERY_ME = gql`
       _id
       username
       email
+      todos {
+        _id
+        status
+        text
+      }
     }
   }
 `;

@@ -12,28 +12,39 @@ export const LOGIN_USER = gql`
   }
 `;
 
-export const ADD_TODO = gql`
-  mutation addTodo($text: String!, $status: String!) {
-    addTodo(text: $text, status: $status) {
-       user {
+export const ADD_USER = gql`
+  mutation login($email: String!, $username: String!, $password: String!) {
+    login(email: $email, username: $username, password: $password) {
+      token
+      user {
         _id
         username
-        email
-        todos
       }
     }
   }
 `;
 
-export const ADD_UPDATE_TODO_STATUS = gql`
-  mutation addTodo($id: ID!, $status: String!) {
-    addTodo(id: $id, status: $status) {
-      user {
+export const ADD_TODO = gql`
+  mutation addTodo($text: String!) {
+    addTodo(text: $text) {
+      _id
+      username
+      email
+      todos {
         _id
-        username
-        email
-        todos
+        text
+        status
       }
+    }
+  }
+`;
+
+export const UPDATE_TODO_STATUS = gql`
+  mutation updateTodoStatus($id: ID!, $status: String!) {
+    updateTodoStatus(id: $id, status: $status) {
+        _id
+        text
+        status
     }
   }
 `;

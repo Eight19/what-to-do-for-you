@@ -13,8 +13,9 @@ function Navbar() {
     return (
       <>
         <Link to="/me">
-          {Auth.getProfile().data.username}'s profile
+          {Auth.getProfile().data.username}'s TODO list
         </Link>
+        &nbsp;
         <button onClick={logout}>
           Logout
         </button>
@@ -27,6 +28,7 @@ function Navbar() {
       <Link to="/login">
         Login
       </Link>
+      &nbsp;
       <Link to="/signup">
         Signup
       </Link>

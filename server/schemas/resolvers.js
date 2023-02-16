@@ -6,10 +6,13 @@ const resolvers = {
   Query: {
     me: async (_, _args, context) => {
       if (context.user) {
-        return User.findByPk(context.user._id).populate('todos');
+        return await User.findById(context.user._id).populate('todos');
       }
       throw new AuthenticationError("You need to be logged in!");
     },
+    todos: async () => {
+      return await Todo.find();
+    }
   },
   Mutation: {
     addUser: async (_, args) => {
@@ -34,32 +37,26 @@ const resolvers = {
 
       return { token, user };
     },
-    addTodo: async ( _, {todoText}, context ) => {
+    addTodo: async ( _, args, context ) => {
       if (context.user) {
-        const todo = await Todo.create({
-          todoText,
-          todo: context.user.username,
-        });
+        const todo = await Todo.create(args);
 
-        await User.findOneAndUpdate(
+        const user = await User.findOneAndUpdate(
           { _id: context.user._id },
-          { $addToSet: { todo: todo._id } }
+          { $addToSet: { todos: todo._id } },
+          { new: true }
         );
 
-        return todo;
+        return await user.populate('todos');
       }
       throw new AuthenticationError('You need to be logged in!');
-    },   
-    updateTodoStatus: async ( _, {todoText}, context ) => {
+    },  
+    updateTodoStatus: async ( _, { id, status }, context ) => {
       if (context.user) {
-        const todo = await Todo.create({
-          todoText,
-          todo: context.user.username,
-        });
-
-        await User.updateTodoStatus(
-          { _id: context.user._id },
-          { $addToSet: { todo: todo._id } }
+        const todo = await Todo.findOneAndUpdate(
+          { _id: id },
+          { $set: { status }},
+          { new: true }
         );
 
         return todo;
