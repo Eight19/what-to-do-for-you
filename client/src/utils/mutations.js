@@ -12,7 +12,7 @@ export const LOGIN_USER = gql`
   }
 `;
 
-export const ADD_TODO = gql`
+export const ADD_USER = gql`
   mutation addTodo($text: String!, $status: String!) {
     addTodo(text: $text, status: $status) {
        user {
@@ -28,4 +28,6 @@ export const ADD_TODO = gql`
 export const ADD_TODO = gql`
   mutation addTodo($text: String!, $status: String!) {
     addTodo(text: $text, status: $status) {
-
+    }
+  }
+`;

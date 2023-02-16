@@ -40,9 +40,6 @@ const resolvers = {
     todos: async () => {
       return Todo.find();
    },
-    todo: async (_, args) => {
-      return Todo.findOne({ _id: args.id });
-
   },
   Mutation: {
     addUser: async (_, args) => {
@@ -100,45 +97,8 @@ const resolvers = {
         return todo;
       }
       throw new AuthenticationError('You need to be logged in!');
-  },
-    },   
-    updateTodoStatus: async ( _, {todoText}, context ) => {
-      if (context.user) {
-        const todo = await Todo.create({
-          todoText,
-          todo: context.user.username,
-        });
-
-        await User.updateTodoStatus(
-          { _id: context.user._id },
-          { $addToSet: { todo: todo._id } }
-        );
-
-        return todo;
-      }
-      throw new AuthenticationError('You need to be logged in!');
-    },   
-    
-
-  },
-  updateTodoStatus: async ( _, { id, status }, context ) => {
-      if (context.user) {
-        const todo = await Todo.findOneAndUpdate(
-          { _id: id }, 
-          { $set: { status }},
-          { new: true }
-        );
-
-        await User.findOneAndUpdate(
-          { _id: context.user._id },
-          { $addToSet: { todo: todo._id } },
-          { new: true }
-        );
-  
-        return todo;
-      }
-      throw new AuthenticationError('You need to be logged in!');
-  },
+    },
+  }
 };
 
-module.exports = typeDefs;
+module.exports = resolvers;
