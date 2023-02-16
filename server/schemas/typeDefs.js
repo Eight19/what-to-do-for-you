@@ -19,8 +19,6 @@ const typeDefs = gql`
     user: User
   }
 
-
-
   type Query {
     users: [User]!
     user(id: ID!): User
