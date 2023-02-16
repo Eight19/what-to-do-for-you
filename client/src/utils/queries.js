@@ -39,3 +39,13 @@ export const QUERY_ME = gql`
     }
   }
 `;
+
+export const QUERY_TODO = gql`
+  query todo($id: ID!) {
+    user(id: $id) {
+      _id
+      username
+      email
+    }
+  }
+`;

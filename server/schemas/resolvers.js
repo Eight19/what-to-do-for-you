@@ -76,7 +76,25 @@ const resolvers = {
         return todo;
       }
       throw new AuthenticationError('You need to be logged in!');
-    },   
+    },  
+    updateTodoStatus: async ( _, { id, status }, context ) => {
+      if (context.user) {
+        const todo = await Todo.findOneAndUpdate(
+          { _id: id }, 
+          { $set: { status }},
+          { new: true }
+        );
+
+        await User.findOneAndUpdate(
+          { _id: context.user._id },
+          { $addToSet: { todo: todo._id } },
+          { new: true }
+        );
+
+        return todo;
+      }
+      throw new AuthenticationError('You need to be logged in!');
+  },
   },
 };
 
