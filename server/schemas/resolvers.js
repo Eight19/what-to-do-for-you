@@ -4,45 +4,12 @@ const { signToken } = require("../utils/auth");
 
 const resolvers = {
   Query: {
-    searchUsers: async (_parent, args) => {
-      const search = args.term;
-      const rgx = (pattern) => new RegExp(`.*${pattern}.*`);
-      const searchRgx = rgx(search);
-      return User.find({
-        $or: [
-          {
-            email: {
-              $regex: searchRgx,
-              $options: "i",
-            },
-          },
-          {
-            username: {
-              $regex: searchRgx,
-              $options: "i",
-            },
-          },
-        ],
-      });
-    },
-    users: async () => {
-      return User.find();
-    },
-    user: async (_, args) => {
-      return User.findOne({ _id: args.id });
-    },
     me: async (_, _args, context) => {
       if (context.user) {
-        return User.findOne({ _id: context.user._id });
+        return User.findByPk(context.user._id).populate('todos');
       }
       throw new AuthenticationError("You need to be logged in!");
     },
-    todos: async () => {
-      return Todo.find();
-   },
-    todo: async (_, args) => {
-      return Todo.findOne({ _id: args.id });
-
   },
   Mutation: {
     addUser: async (_, args) => {
