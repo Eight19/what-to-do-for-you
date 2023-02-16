@@ -41,7 +41,8 @@ export const QUERY_ME = gql`
 `;
 
 export const QUERY_TODO = gql`
-  query todo {
+  query todo($id: ID!) {
+    todo(id: $id) {
       _id
       text
       status
