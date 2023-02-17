@@ -8,7 +8,6 @@ const todoSchema = new Schema({
   },
   status: {
     type: String,
-    required: true,
     default: 'IN_PROGRESS',
   },
 });

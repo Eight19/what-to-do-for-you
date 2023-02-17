@@ -20,19 +20,14 @@ const typeDefs = gql`
   }
 
   type Query {
-    users: [User]!
-    user(id: ID!): User
-    searchUsers(term: String!): [User]!
-    me: User
+    me: User,
     todos: [Todo]
-    todo(id: ID!): Todo
-
+  }
 
   type Mutation {
     addUser(email:String!, username:String!, password:String!): Auth
     login(email:String!, password:String!): Auth
-    addTodo(text: String!): Todo
-    updateTodoStatus(id: ID!, status: String!): Todo
+    addTodo(text: String!): User
     updateTodoStatus(id: ID!, status: String!): Todo
     # Status Types: "IN_PROGRESS", "COMPLETED", "ARCHIVED"
   }
