@@ -4,42 +4,15 @@ const { signToken } = require("../utils/auth");
 
 const resolvers = {
   Query: {
-    searchUsers: async (_parent, args) => {
-      const search = args.term;
-      const rgx = (pattern) => new RegExp(`.*${pattern}.*`);
-      const searchRgx = rgx(search);
-      return User.find({
-        $or: [
-          {
-            email: {
-              $regex: searchRgx,
-              $options: "i",
-            },
-          },
-          {
-            username: {
-              $regex: searchRgx,
-              $options: "i",
-            },
-          },
-        ],
-      });
-    },
-    users: async () => {
-      return User.find();
-    },
-    user: async (_, args) => {
-      return User.findOne({ _id: args.id });
-    },
     me: async (_, _args, context) => {
       if (context.user) {
-        return User.findOne({ _id: context.user._id });
+        return await User.findById(context.user._id).populate('todos');
       }
       throw new AuthenticationError("You need to be logged in!");
     },
     todos: async () => {
-      return Todo.find();
-   },
+      return await Todo.find();
+    }
   },
   Mutation: {
     addUser: async (_, args) => {
@@ -64,41 +37,33 @@ const resolvers = {
 
       return { token, user };
     },
-    addTodo: async ( _, {todoText}, context ) => {
+    addTodo: async ( _, args, context ) => {
       if (context.user) {
-        const todo = await Todo.create({
-          todoText,
-          todo: context.user.username,
-        });
+        const todo = await Todo.create(args);
 
-        await User.findOneAndUpdate(
+        const user = await User.findOneAndUpdate(
           { _id: context.user._id },
-          { $addToSet: { todo: todo._id } }
+          { $addToSet: { todos: todo._id } },
+          { new: true }
         );
 
-        return todo;
+        return await user.populate('todos');
       }
       throw new AuthenticationError('You need to be logged in!');
     },  
     updateTodoStatus: async ( _, { id, status }, context ) => {
       if (context.user) {
         const todo = await Todo.findOneAndUpdate(
-          { _id: id }, 
+          { _id: id },
           { $set: { status }},
-          { new: true }
-        );
-
-        await User.findOneAndUpdate(
-          { _id: context.user._id },
-          { $addToSet: { todo: todo._id } },
           { new: true }
         );
 
         return todo;
       }
       throw new AuthenticationError('You need to be logged in!');
-    },
-  }
+    },   
+  },
 };
 
 module.exports = resolvers;

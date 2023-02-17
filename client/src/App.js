@@ -11,7 +11,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
-import Profile from './pages/Profile';
 import Header from './components/Header';
 import Footer from './components/Footer';
 
@@ -43,17 +42,15 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <Router>
-        <>
+        <main class="container">
           <Header />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/me" element={<Profile />} />
-            <Route path="/users/:id" element={<Profile />} />
           </Routes>
           <Footer />
-        </>
+        </main>
       </Router>
     </ApolloProvider>
   );
